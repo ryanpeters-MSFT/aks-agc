@@ -1,14 +1,23 @@
 kind: HTTPRoute
-apiVersion: gateway.networking.k8s.io/v1beta1
+apiVersion: gateway.networking.k8s.io/v1
 metadata:
-  name: nginx-route
+  name: canary-route
 spec:
-  # hostnames: 
+  # hostnames:
   #   - "*"
   parentRefs:
     - kind: Gateway
       name: gateway
+      sectionName: web
   rules:
-    - backendRefs:
-        - name: nginx
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: workload-a
           port: 80
+          weight: 80
+        - name: workload-b
+          port: 80
+          weight: 20

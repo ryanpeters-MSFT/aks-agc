@@ -2,7 +2,7 @@
 apiVersion: alb.networking.azure.io/v1
 kind: ApplicationLoadBalancer
 metadata:
-  name: alb-test
+  name: aksalb
   namespace: alb
 spec:
   associations:

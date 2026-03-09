@@ -1,14 +1,14 @@
 kind: Gateway
-apiVersion: gateway.networking.k8s.io/v1beta1
+apiVersion: gateway.networking.k8s.io/v1
 metadata:
   name: gateway
   annotations:
-    alb.networking.azure.io/alb-name: alb-test
+    alb.networking.azure.io/alb-name: aksalb
     alb.networking.azure.io/alb-namespace: alb
 spec:
   gatewayClassName: azure-alb-external
   listeners:
-    - name: nginx-route
+    - name: web
       protocol: HTTP
       port: 80
       allowedRoutes:

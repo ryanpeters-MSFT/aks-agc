@@ -6,7 +6,7 @@ $CLUSTER_NAME = "agccluster"
 $IDENTITY_NAME = "agcuser"
 
 # create the resource group
-az group create -n $GROUP -l eastus2 --query id -o tsv
+az group create -n $GROUP -l eastus2
 
 # create a vnet
 az network vnet create -n $VNET -g $GROUP --address-prefixes 10.0.0.0/16
@@ -86,7 +86,7 @@ az aks get-credentials --resource-group $GROUP --name $CLUSTER_NAME --overwrite-
 helm install alb-controller oci://mcr.microsoft.com/application-lb/charts/alb-controller `
     --namespace "alb" `
     --create-namespace `
-    --version 1.8.12 `
+    --version 1.9.13 `
     --set albController.namespace="alb" `
     --set albController.podIdentity.clientID=$(az identity show -g $GROUP -n $IDENTITY_NAME --query clientId -o tsv)
 

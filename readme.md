@@ -19,7 +19,7 @@ kubectl apply -f .\apploadbalancer.yaml
 az network alb list -o table
 ```
 
-Finally, deploy the sample workload. The workload consists of a simple Nginx deployment and ClusterIP service.
+Finally, deploy the sample workloads. The manifest deploys two services, each serving an HTML page whose content is driven by the `CONTENT` environment variable. The default values are `Workload A` and `Workload B`.
 
 ```powershell
 # deploy sample workload
@@ -28,7 +28,7 @@ kubectl apply -f .\workload.yaml
 
 ### Deploy using Ingress
 
-To deploy using Ingress, apply the Ingress manifest to expose a route to the Nginx pods.
+To deploy using Ingress, apply the Ingress manifest to expose a route to `workload-a`.
 
 ```powershell
 # create the ingress resource
@@ -47,7 +47,7 @@ curl.exe http://$hostname
 
 ### Deploy using Gateway API
 
-To deploy using Gateway API and HttpRoute, apply their manifests to expose a gateway and default route to the Nginx pods.
+To deploy using Gateway API and HttpRoute, apply their manifests to expose a gateway and a weighted canary route. The default split is 80% of traffic to `workload-a` and 20% to `workload-b`.
 
 ```powershell
 # create the gateway and httproute resources

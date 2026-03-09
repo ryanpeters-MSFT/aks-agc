@@ -1,32 +1,71 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx
+  name: workload-a
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: nginx
+      app: workload-a
   template:
     metadata:
       labels:
-        app: nginx
+        app: workload-a
     spec:
       containers:
-      - image: nginx
-        name: nginx
-        resources: {}
+        - name: workload-a
+          image: binarydad/dotnet-sample-workload:latest
+          env:
+            - name: CONTENT
+              value: "workload A"
+          ports:
+            - containerPort: 8080
+          resources: {}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  labels:
-    app: nginx
-  name: nginx
+  name: workload-a
 spec:
   ports:
-  - port: 80
-    protocol: TCP
-    targetPort: 80
+    - port: 80
+      protocol: TCP
+      targetPort: 8080
   selector:
-    app: nginx
+    app: workload-a
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workload-b
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: workload-b
+  template:
+    metadata:
+      labels:
+        app: workload-b
+    spec:
+      containers:
+        - name: workload-b
+          image: binarydad/dotnet-sample-workload:latest
+          env:
+            - name: CONTENT
+              value: "workload B"
+          ports:
+            - containerPort: 8080
+          resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: workload-b
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: workload-b
